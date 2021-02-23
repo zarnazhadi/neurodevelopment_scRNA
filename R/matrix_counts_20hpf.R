@@ -1,5 +1,6 @@
 library("Matrix")
 library(tidyverse)
+library("Seurat")
 
 setwd("/rds/projects/v/vianaj-development-rna/appDir/data")
 
@@ -33,3 +34,19 @@ S2.counts <- readMM(S2.list[3])
 rownames(S2.counts) <- S2.gene.ids
 colnames(S2.counts) <- S2.cell.ids
 S2.counts
+
+# combine counts by creating seurat objects
+S1a <- CreateSeuratObject(counts = S1a.counts, project = "S1a")
+S1b <- CreateSeuratObject(counts = S1b.counts, project = "S1b")
+S2 <- CreateSeuratObject(counts = S2.counts, project = "S2")
+
+# merge multiple counts
+hpf20.combined <- merge(S1a, y = c(S1b, S2), add.cell.ids = c("S1a", "S1b", "S2"), project = "hpf20")
+hpf20.combined
+
+# cell names have an added identifier 
+head(colnames(hpf20.combined))
+
+# visualise
+table(hpf20.combined$orig.ident)
+
