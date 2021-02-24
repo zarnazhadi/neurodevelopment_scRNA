@@ -50,3 +50,55 @@ head(colnames(hpf20.combined))
 # visualise
 table(hpf20.combined$orig.ident)
 
+#------------------------------------———NORMALISATION—————————————————————---------------------------- 
+
+# standard pre processing workflow
+# examine the memory savings between regular and sparse matrices
+S1a.dense.size <- object.size(x = as.matrix(x = S1a.counts)) # 710762024 bytes
+S1b.dense.size <- object.size(x = as.matrix(x = S1b.counts)) # 2045470520 bytes
+S2.dense.size <- object.size(x = as.matrix(x = S2.counts)) # 669801080 bytes
+
+S1a.sparse.size <- object.size(x = S1a.counts) # 66976824 bytes
+S1b.sparse.size <- object.size(x = S1b.counts) # 196081160 bytes
+S2.sparse.size <- object.size(x = S2.counts) # 64607120 bytes
+
+S1a.dense.size/S1a.sparse.size # 10.6 bytes
+S1b.dense.size/S1b.sparse.size # 10.4 bytes
+S2.dense.size/S2.sparse.size # 10.4 bytes
+
+# initialize the Seurat object with the raw (non-normalized data).  Keep all
+# genes expressed in >= 3 cells (~0.1% of the data). Keep all cells with at
+# least 200 detected genes
+
+S1a <- CreateSeuratObject(counts = S1a.counts, min.cells = 3, min.features  = 200, project = "S1a", assay = "RNA")
+S1b <- CreateSeuratObject(counts = S1b.counts, min.cells = 3, min.features  = 200, project = "S1b", assay = "RNA")
+S2 <- CreateSeuratObject(counts = S2.counts, min.cells = 3, min.features  = 200, project = "S2", assay = "RNA")
+
+# QC and selecting cells for further analysis
+# % mitochondrial genes
+
+S1a.mito.genes <- grep(pattern = "^MT-", x = rownames(S1a@assays[["RNA"]]), value = TRUE)
+S1b.mito.genes <- grep(pattern = "^MT-", x = rownames(S1b@assays[["RNA"]]), value = TRUE)
+S2.mito.genes <- grep(pattern = "^MT-", x = rownames(S2@assays[["RNA"]]), value = TRUE)
+
+S1a.percent.mito <- Matrix::colSums(S1a@assays[["RNA"]][S1a.mito.genes, ])/Matrix::colSums(S1a@assays[["RNA"]])
+S1b.percent.mito <- Matrix::colSums(S1b@assays[["RNA"]][S1b.mito.genes, ])/Matrix::colSums(S1b@assays[["RNA"]])
+S2.percent.mito <- Matrix::colSums(S2@assays[["RNA"]][S2.mito.genes, ])/Matrix::colSums(S2@assays[["RNA"]])
+
+S1a <- AddMetaData(object = S1a, metadata = S1a.percent.mito, col.name = "S1a.percent.mito")
+S1b <- AddMetaData(object = S1b, metadata = S1b.percent.mito, col.name = "S1b.percent.mito")
+S2 <- AddMetaData(object = S2, metadata = S2.percent.mito, col.name = "S2.percent.mito")
+
+# plots
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/20hpf_S1a_vln_plot.pdf")
+VlnPlot(object = S1a, features = c("nFeature_RNA", "nCount_RNA", "S1a.percent.mito"), ncol = 3)
+dev.off()
+
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/20hpf_S1b_vln_plot.pdf")
+VlnPlot(object = S1b, features = c("nFeature_RNA", "nCount_RNA", "S1b.percent.mito"), ncol = 3)
+dev.off()
+
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/20hpf_S2_vln_plot.pdf")
+VlnPlot(object = S2, features = c("nFeature_RNA", "nCount_RNA", "S2.percent.mito"), ncol = 3)
+dev.off()
+
