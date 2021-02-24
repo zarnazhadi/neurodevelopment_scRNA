@@ -1,6 +1,8 @@
 library("Matrix")
 library(tidyverse)
 library("Seurat")
+library(dplyr)
+library(cowplot)
 
 setwd("/rds/projects/v/vianaj-development-rna/appDir/data")
 
