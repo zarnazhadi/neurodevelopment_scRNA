@@ -17,7 +17,7 @@ S1a.counts <- readMM(S1a.list[3])
 
 rownames(S1a.counts) <- S1a.gene.ids
 colnames(S1a.counts) <- S1a.cell.ids
-S1a.counts
+#S1a.counts
 
 # read S1b files
 S1b.cell.ids <- read_tsv(S1b.list[1], col_names = FALSE)$X1
@@ -26,7 +26,7 @@ S1b.counts <- readMM(S1b.list[3])
 
 rownames(S1b.counts) <- S1b.gene.ids
 colnames(S1b.counts) <- S1b.cell.ids
-S1b.counts
+#S1b.counts
 
 # read S2 files
 S2.cell.ids <- read_tsv(S2.list[1], col_names = FALSE)$X1
@@ -35,7 +35,7 @@ S2.counts <- readMM(S2.list[3])
 
 rownames(S2.counts) <- S2.gene.ids
 colnames(S2.counts) <- S2.cell.ids
-S2.counts
+#S2.counts
 
 # combine counts by creating seurat objects
 S1a <- CreateSeuratObject(counts = S1a.counts, project = "S1a")
@@ -141,3 +141,16 @@ S2 <- subset(x = S2, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & S2.perc
 S1a <- NormalizeData(object = S1a, normalization.method = "LogNormalize", scale.factor = 10000)
 S1b <- NormalizeData(object = S1b, normalization.method = "LogNormalize", scale.factor = 10000)
 S2 <- NormalizeData(object = S2, normalization.method = "LogNormalize", scale.factor = 10000)
+
+# merge based on normalised data
+hpf20.normalised <- merge(S1a, y = c(S1b, S2), add.cell.ids = c("S1a", "S1b", "S2"), project = "hpf20", merge.data = TRUE)
+GetAssayData(hpf20.combined[1:10, 1:15])
+GetAssayData(hpf20.normalised[1:10, 1:15])
+
+# normalise merged data
+hpf20.combined.normalised <- NormalizeData(object = hpf20.combined, normalization.method = "LogNormalize", scale.factor = 10000)
+GetAssayData(hpf20.combined.normalised[1:10, 1:15])
+
+# output as matrix - need to finish this
+#as.matrix(object@hpf20.combined.normalised)
+#write.csv2(as.matrix(hpf20.combined.normalised), file= "hpf20_combined_normalised.csv")
