@@ -110,3 +110,12 @@ S4 <- subset(x = S4, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & S4.perc
 # normalise
 S3 <- NormalizeData(object = S3, normalization.method = "LogNormalize", scale.factor = 10000)
 S4 <- NormalizeData(object = S3, normalization.method = "LogNormalize", scale.factor = 10000)
+
+# merge based on normalised data
+hpf18.normalised <- merge(S3, y = S4, add.cell.ids = c("S3", "S4"), project = "hpf18", merge.data = TRUE)
+GetAssayData(hpf18.combined[1:10, 1:15])
+GetAssayData(hpf18.normalised[1:10, 1:15])
+
+# normalise merged data
+hpf18.combined.normalised <- NormalizeData(object = hpf18.combined, normalization.method = "LogNormalize", scale.factor = 10000)
+GetAssayData(hpf18.combined.normalised[1:10, 1:15]) # same outcome as above 
