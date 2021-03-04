@@ -37,21 +37,6 @@ rownames(S2.counts) <- S2.gene.ids
 colnames(S2.counts) <- S2.cell.ids
 #S2.counts
 
-# combine counts by creating seurat objects
-S1a <- CreateSeuratObject(counts = S1a.counts, project = "S1a")
-S1b <- CreateSeuratObject(counts = S1b.counts, project = "S1b")
-S2 <- CreateSeuratObject(counts = S2.counts, project = "S2")
-
-# merge multiple counts
-hpf20.combined <- merge(S1a, y = c(S1b, S2), add.cell.ids = c("S1a", "S1b", "S2"), project = "hpf20")
-hpf20.combined
-
-# cell names have an added identifier 
-head(colnames(hpf20.combined))
-
-# visualise
-table(hpf20.combined$orig.ident)
-
 #------------------------------------———NORMALISATION—————————————————————---------------------------- 
 
 # standard pre processing workflow
@@ -138,19 +123,19 @@ S1b <- subset(x = S1b, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & S1b.p
 S2 <- subset(x = S2, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & S2.percent.mito >  -Inf & S2.percent.mito < 0.05 )
 
 # normalise
-S1a <- NormalizeData(object = S1a, normalization.method = "LogNormalize", scale.factor = 10000)
-S1b <- NormalizeData(object = S1b, normalization.method = "LogNormalize", scale.factor = 10000)
-S2 <- NormalizeData(object = S2, normalization.method = "LogNormalize", scale.factor = 10000)
+# S1a <- NormalizeData(object = S1a, normalization.method = "LogNormalize", scale.factor = 10000)
+# S1b <- NormalizeData(object = S1b, normalization.method = "LogNormalize", scale.factor = 10000)
+# S2 <- NormalizeData(object = S2, normalization.method = "LogNormalize", scale.factor = 10000)
 
-# merge based on normalised data
-hpf20.normalised <- merge(S1a, y = c(S1b, S2), add.cell.ids = c("S1a", "S1b", "S2"), project = "hpf20", merge.data = TRUE)
-GetAssayData(hpf20.combined[1:10, 1:15])
-GetAssayData(hpf20.normalised[1:10, 1:15])
+# merge data
+hpf20.combined <- merge(S1a, y = c(S1b, S2), add.cell.ids = c("S1a", "S1b", "S2"), project = "hpf20")
 
-# normalise merged data
+# cell names have an added identifier 
+head(colnames(hpf20.combined))
+
+# visualise
+table(hpf20.combined$orig.ident)
+
+# normalise
 hpf20.combined.normalised <- NormalizeData(object = hpf20.combined, normalization.method = "LogNormalize", scale.factor = 10000)
 GetAssayData(hpf20.combined.normalised[1:10, 1:15])
-
-# output as matrix - need to finish this
-#as.matrix(object@hpf20.combined.normalised)
-#write.csv2(as.matrix(hpf20.combined.normalised), file= "hpf20_combined_normalised.csv")
