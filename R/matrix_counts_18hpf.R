@@ -11,7 +11,7 @@ S4.list <- list.files(pattern=glob2rx("*18hpf2_18S_S4*")) # [1] barcodes [2] gen
 
 # read S3 files
 S3.cell.ids <- read_tsv(S3.list[1], col_names = FALSE)$X1
-S3.gene.ids <- read_tsv(S3.list[2], col_names = FALSE)$X1
+S3.gene.ids <- read_tsv(S3.list[2], col_names = FALSE)$X2
 S3.counts <- readMM(S3.list[3]) 
 
 rownames(S3.counts) <- S3.gene.ids
@@ -20,26 +20,12 @@ colnames(S3.counts) <- S3.cell.ids
 
 # read S4 files
 S4.cell.ids <- read_tsv(S4.list[1], col_names = FALSE)$X1
-S4.gene.ids <- read_tsv(S4.list[2], col_names = FALSE)$X1
+S4.gene.ids <- read_tsv(S4.list[2], col_names = FALSE)$X2
 S4.counts <- readMM(S4.list[3]) 
 
 rownames(S4.counts) <- S4.gene.ids
 colnames(S4.counts) <- S4.cell.ids
 #S4.counts
-
-# combine counts by creating two seurat objects
-S3 <- CreateSeuratObject(counts = S3.counts, project = "S3")
-S4 <- CreateSeuratObject(counts = S4.counts, project = "S4")
-
-# merge counts
-hpf18.combined <- merge(S3, y = S4, add.cell.ids = c("S3", "S4"), project = "hpf18")
-#hpf18.combined
-
-# cell names have an added identifier 
-head(colnames(hpf18.combined))
-
-# visualise
-table(hpf18.combined$orig.ident)
 
 #------------------------------------———NORMALISATION—————————————————————---------------------------- 
 
@@ -74,32 +60,32 @@ S3 <- AddMetaData(object = S3, metadata = S3.percent.mito, col.name = "S3.percen
 S4 <- AddMetaData(object = S4, metadata = S4.percent.mito, col.name = "S4.percent.mito")
 
 # S3 vln plot
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/UPDATE_18hpf_S3_vln_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_18hpf_S3_vln_plot.pdf")
 VlnPlot(object = S3, features = c("nFeature_RNA", "nCount_RNA", "S3.percent.mito"), ncol = 3)
 dev.off()
 
 # S3 scatter plots
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S3_mito_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S3_mito_scatter_plot.pdf")
 par(mfrow = c(1, 2))
 FeatureScatter(object = S3, feature1 = "nCount_RNA", feature2 = "S3.percent.mito")
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S3_RNA_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S3_RNA_scatter_plot.pdf")
 FeatureScatter(object = S3, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 dev.off()
 
 # S4 vln plot
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/UPDATE_18hpf_S4_vln_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_18hpf_S4_vln_plot.pdf")
 VlnPlot(object = S4, features = c("nFeature_RNA", "nCount_RNA", "S4.percent.mito"), ncol = 3)
 dev.off()
 
 # S4 scatter plots
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S4_mito_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S4_mito_scatter_plot.pdf")
 par(mfrow = c(1, 2))
 FeatureScatter(object = S4, feature1 = "nCount_RNA", feature2 = "S4.percent.mito")
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S4_RNA_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S4_RNA_scatter_plot.pdf")
 FeatureScatter(object = S4, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 dev.off()
 
@@ -108,14 +94,21 @@ S3 <- subset(x = S3, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & S3.perc
 S4 <- subset(x = S4, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & S4.percent.mito >  -Inf & S4.percent.mito < 0.05 )
 
 # normalise
-S3 <- NormalizeData(object = S3, normalization.method = "LogNormalize", scale.factor = 10000)
-S4 <- NormalizeData(object = S3, normalization.method = "LogNormalize", scale.factor = 10000)
+# S3 <- NormalizeData(object = S3, normalization.method = "LogNormalize", scale.factor = 10000)
+# S4 <- NormalizeData(object = S3, normalization.method = "LogNormalize", scale.factor = 10000)
 
-# merge based on normalised data
-hpf18.normalised <- merge(S3, y = S4, add.cell.ids = c("S3", "S4"), project = "hpf18", merge.data = TRUE)
-GetAssayData(hpf18.combined[1:10, 1:15])
-GetAssayData(hpf18.normalised[1:10, 1:15])
+# merge
+hpf18.combined <- merge(S3, y = S4, add.cell.ids = c("S3", "S4"), project = "hpf18")
+
+# cell names have an added identifier 
+head(colnames(hpf18.combined))
+
+# visualise
+table(hpf18.combined$orig.ident)
 
 # normalise merged data
 hpf18.combined.normalised <- NormalizeData(object = hpf18.combined, normalization.method = "LogNormalize", scale.factor = 10000)
-GetAssayData(hpf18.combined.normalised[1:10, 1:15]) # same outcome as above 
+GetAssayData(hpf18.combined.normalised[1:10, 1:15])
+
+# output file as .rds
+saveRDS(hpf18.combined.normalised, file = "hpf18_combined_normalised.rds")
