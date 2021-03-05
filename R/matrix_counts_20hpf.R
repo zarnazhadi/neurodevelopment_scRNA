@@ -12,7 +12,7 @@ S2.list <- list.files(pattern=glob2rx("*20hpf2_S2*")) # [1] barcodes [2] genes [
 
 # read S1a files
 S1a.cell.ids <- read_tsv(S1a.list[1], col_names = FALSE)$X1
-S1a.gene.ids <- read_tsv(S1a.list[2], col_names = FALSE)$X1
+S1a.gene.ids <- read_tsv(S1a.list[2], col_names = FALSE)$X2 # was x1 before and was getting the ensembl ids instead of gene names
 S1a.counts <- readMM(S1a.list[3]) 
 
 rownames(S1a.counts) <- S1a.gene.ids
@@ -21,7 +21,7 @@ colnames(S1a.counts) <- S1a.cell.ids
 
 # read S1b files
 S1b.cell.ids <- read_tsv(S1b.list[1], col_names = FALSE)$X1
-S1b.gene.ids <- read_tsv(S1b.list[2], col_names = FALSE)$X1
+S1b.gene.ids <- read_tsv(S1b.list[2], col_names = FALSE)$X2
 S1b.counts <- readMM(S1b.list[3]) 
 
 rownames(S1b.counts) <- S1b.gene.ids
@@ -30,7 +30,7 @@ colnames(S1b.counts) <- S1b.cell.ids
 
 # read S2 files
 S2.cell.ids <- read_tsv(S2.list[1], col_names = FALSE)$X1
-S2.gene.ids <- read_tsv(S2.list[2], col_names = FALSE)$X1
+S2.gene.ids <- read_tsv(S2.list[2], col_names = FALSE)$X2
 S2.counts <- readMM(S2.list[3]) 
 
 rownames(S2.counts) <- S2.gene.ids
@@ -77,43 +77,43 @@ S1b <- AddMetaData(object = S1b, metadata = S1b.percent.mito, col.name = "S1b.pe
 S2 <- AddMetaData(object = S2, metadata = S2.percent.mito, col.name = "S2.percent.mito")
 
 # vln plots
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/UPDATE_20hpf_S1a_vln_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_20hpf_S1a_vln_plot.pdf")
 VlnPlot(object = S1a, features = c("nFeature_RNA", "nCount_RNA", "S1a.percent.mito"), ncol = 3)
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/UPDATE_20hpf_S1b_vln_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_20hpf_S1b_vln_plot.pdf")
 VlnPlot(object = S1b, features = c("nFeature_RNA", "nCount_RNA", "S1b.percent.mito"), ncol = 3)
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/UPDATE_20hpf_S2_vln_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_20hpf_S2_vln_plot.pdf")
 VlnPlot(object = S2, features = c("nFeature_RNA", "nCount_RNA", "S2.percent.mito"), ncol = 3)
 dev.off()
 
 # scatter plots
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/20hpf_S1a_mito_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/20hpf_S1a_mito_scatter_plot.pdf")
 par(mfrow = c(1, 2))
 FeatureScatter(object = S1a, feature1 = "nCount_RNA", feature2 = "S1a.percent.mito")
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/20hpf_S1a_RNA_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/20hpf_S1a_RNA_scatter_plot.pdf")
 FeatureScatter(object = S1a, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S1b_mito_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S1b_mito_scatter_plot.pdf")
 par(mfrow = c(1, 2))
 FeatureScatter(object = S1b, feature1 = "nCount_RNA", feature2 = "S1b.percent.mito")
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S1b_RNA_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S1b_RNA_scatter_plot.pdf")
 FeatureScatter(object = S1b, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S2_mito_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S2_mito_scatter_plot.pdf")
 par(mfrow = c(1, 2))
 FeatureScatter(object = S2, feature1 = "nCount_RNA", feature2 = "S2.percent.mito")
 dev.off()
 
-pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/18hpf_S2_RNA_scatter_plot.pdf")
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S2_RNA_scatter_plot.pdf")
 FeatureScatter(object = S2, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 dev.off()
 
@@ -139,3 +139,6 @@ table(hpf20.combined$orig.ident)
 # normalise
 hpf20.combined.normalised <- NormalizeData(object = hpf20.combined, normalization.method = "LogNormalize", scale.factor = 10000)
 GetAssayData(hpf20.combined.normalised[1:10, 1:15])
+
+# output file as .rds
+saveRDS(hpf20.combined.normalised, file = "hpf20_combined_normalised.rds")
