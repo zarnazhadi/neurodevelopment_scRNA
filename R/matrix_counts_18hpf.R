@@ -48,7 +48,7 @@ S3 <- CreateSeuratObject(counts = S3.counts, min.cells = 3, min.features  = 500,
 S4 <- CreateSeuratObject(counts = S4.counts, min.cells = 3, min.features  = 500, project = "S4", assay = "RNA")
 
 # QC and selecting cells for further analysis
-# % mitochondrial genes - for zebrafish the mitochondrial pattern is "mt-|^AC0"
+# % mitochondrial genes
 
 S3.mito.genes <- grep(pattern = "mt-|^AC0", x = rownames(S3@assays[["RNA"]]), value = TRUE)
 S4.mito.genes <- grep(pattern = "mt-|^AC0", x = rownames(S4@assays[["RNA"]]), value = TRUE)
@@ -58,6 +58,18 @@ S4.percent.mito <- Matrix::colSums(S4@assays[["RNA"]][S4.mito.genes, ])/Matrix::
 
 S3 <- AddMetaData(object = S3, metadata = S3.percent.mito, col.name = "S3.percent.mito")
 S4 <- AddMetaData(object = S4, metadata = S4.percent.mito, col.name = "S4.percent.mito")
+
+# ribosomal genes
+# S3.ribo.genes <- grep(pattern = "^rps|^rpl", x = rownames(S3@assays[["RNA"]]), value = TRUE)
+# S4.ribo.genes <- grep(pattern = "^rps|^rpl", x = rownames(S4@assays[["RNA"]]), value = TRUE)
+
+# hsp genes 
+# S3.hsp.genes <- grep(pattern = "^hsp", x = rownames(S3@assays[["RNA"]]), value = TRUE)
+# S4.hsp.genes <- grep(pattern = "^hsp", x = rownames(S4@assays[["RNA"]]), value = TRUE)
+
+# duplicate genes 
+# S3.dup.genes <- grep(pattern = "of many", x = rownames(S3@assays[["RNA"]]), value = TRUE)
+# S4.dup.genes <- grep(pattern = "of many", x = rownames(S4@assays[["RNA"]]), value = TRUE)
 
 # S3 vln plot
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_18hpf_S3_vln_plot.pdf")
