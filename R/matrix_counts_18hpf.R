@@ -56,8 +56,8 @@ S4.mito.genes <- grep(pattern = "mt-|^AC0", x = rownames(S4@assays[["RNA"]]), va
 S3.percent.mito <- Matrix::colSums(S3@assays[["RNA"]][S3.mito.genes, ])/Matrix::colSums(S3@assays[["RNA"]])
 S4.percent.mito <- Matrix::colSums(S4@assays[["RNA"]][S4.mito.genes, ])/Matrix::colSums(S4@assays[["RNA"]])
 
-S3 <- AddMetaData(object = S3, metadata = S3.percent.mito, col.name = "S3.percent.mito")
-S4 <- AddMetaData(object = S4, metadata = S4.percent.mito, col.name = "S4.percent.mito")
+S3 <- AddMetaData(object = S3, metadata = S3.percent.mito, col.name = "percent.mito")
+S4 <- AddMetaData(object = S4, metadata = S4.percent.mito, col.name = "percent.mito")
 
 # ribosomal genes
 # S3.ribo.genes <- grep(pattern = "^rps|^rpl", x = rownames(S3@assays[["RNA"]]), value = TRUE)
@@ -73,13 +73,13 @@ S4 <- AddMetaData(object = S4, metadata = S4.percent.mito, col.name = "S4.percen
 
 # S3 vln plot
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_18hpf_S3_vln_plot.pdf")
-VlnPlot(object = S3, features = c("nFeature_RNA", "nCount_RNA", "S3.percent.mito"), ncol = 3)
+VlnPlot(object = S3, features = c("nFeature_RNA", "nCount_RNA", "percent.mito"), ncol = 3)
 dev.off()
 
 # S3 scatter plots
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S3_mito_scatter_plot.pdf")
 par(mfrow = c(1, 2))
-FeatureScatter(object = S3, feature1 = "nCount_RNA", feature2 = "S3.percent.mito")
+FeatureScatter(object = S3, feature1 = "nCount_RNA", feature2 = "percent.mito")
 dev.off()
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S3_RNA_scatter_plot.pdf")
@@ -88,13 +88,13 @@ dev.off()
 
 # S4 vln plot
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/UPDATE_18hpf_S4_vln_plot.pdf")
-VlnPlot(object = S4, features = c("nFeature_RNA", "nCount_RNA", "S4.percent.mito"), ncol = 3)
+VlnPlot(object = S4, features = c("nFeature_RNA", "nCount_RNA", "percent.mito"), ncol = 3)
 dev.off()
 
 # S4 scatter plots
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S4_mito_scatter_plot.pdf")
 par(mfrow = c(1, 2))
-FeatureScatter(object = S4, feature1 = "nCount_RNA", feature2 = "S4.percent.mito")
+FeatureScatter(object = S4, feature1 = "nCount_RNA", feature2 = "percent.mito")
 dev.off()
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf_S4_RNA_scatter_plot.pdf")
