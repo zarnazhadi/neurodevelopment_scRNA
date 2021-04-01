@@ -15,7 +15,7 @@ head(x = HVFInfo(object = sample))
 sample <- ScaleData(object = sample, vars.to.regress = c("nCount_RNA", "percent.mito")) 
 
 #------------------------------------———DIMENSIONAL REDUCTION—————————————————————---------------------------- 
-sample <- RunPCA(object = sample,  npcs = 30, verbose = FALSE)
+sample <- RunPCA(object = sample,  npcs = 120, verbose = FALSE)
 
 #------------------------------------———PLOTS—————————————————————---------------------------- 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf/post-normalisation/18hpf_hmgn2_dimplot.pdf")
@@ -27,19 +27,19 @@ VariableFeaturePlot(object = sample)
 dev.off()
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf/post-normalisation/18hpf_heat_map.pdf")
-DimHeatmap(object = sample, reduction = "pca", cells = 200, balanced = TRUE)
+plot <- DimHeatmap(object = sample, reduction = "pca", cells = 200, balanced = TRUE)
 dev.off()
 
 #------------------------------------———DETERMINE STATISTICALLY SIGNIFICANT GENES—————————————————————---------------------------- 
-sample <- JackStraw(object = sample, reduction = "pca", dims = 20, num.replicate = 100,  prop.freq = 0.1, verbose = FALSE)
-sample <- ScoreJackStraw(object = sample, dims = 1:20, reduction = "pca")
+sample <- JackStraw(object = sample, reduction = "pca", dims = 120, num.replicate = 100,  prop.freq = 0.1, verbose = FALSE)
+sample <- ScoreJackStraw(object = sample, dims = 1:120, reduction = "pca")
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf/post-normalisation/18hpf_jack_straw_plot.pdf")
-JackStrawPlot(object = sample, dims = 1:20, reduction = "pca", xmax = 0.0025)
+JackStrawPlot(object = sample, dims = 1:120, reduction = "pca", xmax = 0.0025)
 dev.off()
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf/post-normalisation/18hpf_elbow_plot.pdf")
-ElbowPlot(object = sample)
+ElbowPlot(object = sample, ndims= 120)
 dev.off()
 
 #------------------------------------———CLUSTER CELLS—————————————————————---------------------------- 
