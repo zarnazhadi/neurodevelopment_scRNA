@@ -34,7 +34,8 @@ sample <- AddMetaData(object = sample, metadata = sample.percent.mito, col.name 
 
 # filter out mitochondrial genes
 sample <- subset(x = sample, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & 
-                   sample.percent.mito >  -Inf & sample.percent.mito < 0.09)
+                   sample.percent.mito >  -Inf & sample.percent.mito < 0.09 & 
+                   nCount_RNA >  -Inf & nCount_RNA < 10000)
 
 # selection of ribosomal genes
 sample.ribo.genes <- grep(pattern = "^rps|^rpl", x = rownames(sample@assays[["RNA"]]), value = TRUE)
@@ -59,6 +60,11 @@ sample.dup.genes <- grep(pattern = "1 of many", x = rownames(sample@assays[["RNA
 dup.index <- which(rownames(sample.counts) %in% sample.dup.genes)
 sample.counts <- sample.counts[-dup.index, ]
 sample <- subset(sample, features = rownames(sample.counts))
+
+# make sure nFeatures has subsetted properly
+length(sample$nFeature_RNA)
+sample <- subset(x = sample, subset = nFeature_RNA > 500)
+length(sample$nFeature_RNA)
 
 # save clean data 
 setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data")
