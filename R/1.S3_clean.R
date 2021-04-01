@@ -60,6 +60,11 @@ dup.index <- which(rownames(sample.counts) %in% sample.dup.genes)
 sample.counts <- sample.counts[-dup.index, ]
 sample <- subset(sample, features = rownames(sample.counts))
 
+# make sure nFeatures has subsetted properly
+length(sample$nFeature_RNA)
+sample <- subset(x = sample, subset = nFeature_RNA > 500)
+length(sample$nFeature_RNA)
+
 # save clean data 
 setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data")
 saveRDS(sample, file = "S3_hpf18_clean.rds")
