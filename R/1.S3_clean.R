@@ -34,7 +34,8 @@ sample <- AddMetaData(object = sample, metadata = sample.percent.mito, col.name 
 
 # filter out mitochondrial genes
 sample <- subset(x = sample, subset = nFeature_RNA > 500 & nFeature_RNA < 2500 & 
-               sample.percent.mito >  -Inf & sample.percent.mito < 0.09)
+                   sample.percent.mito >  -Inf & sample.percent.mito < 0.09 & 
+                   nCount_RNA >  -Inf & nCount_RNA < 10000)
 
 # selection of ribosomal genes
 sample.ribo.genes <- grep(pattern = "^rps|^rpl", x = rownames(sample@assays[["RNA"]]), value = TRUE)
