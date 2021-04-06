@@ -44,7 +44,7 @@ dev.off()
 
 #------------------------------------———CLUSTER CELLS—————————————————————---------------------------- 
 # find k-nearest neighbours
-sample <- FindNeighbors(sample, reduction = "pca", dims = 1:20)
+sample <- FindNeighbors(sample, reduction = "pca", dims = 1:120)
 
 # cluster cells
 sample <- FindClusters(sample, resolution = 0.5, algorithm = 1)
