@@ -9,6 +9,7 @@ setwd("/rds/projects/v/vianaj-development-rna/appDir/data")
 #------------------------------------———RAW DATA PREP—————————————————————---------------------------- 
 # make list of file names
 sample.list <- list.files(pattern=glob2rx("*20hpf1_S1*")) # [1] barcodes [2] genes [3] matrix
+sample.name <- "S1a"
 
 # read and prepare files
 sample.cell.ids <- read_tsv(sample.list[1], col_names = FALSE)$X1
@@ -21,7 +22,11 @@ colnames(sample.counts) <- sample.cell.ids
 #------------------------------------———QC—————————————————————---------------------------- 
 # initialize the Seurat object with the raw (non-normalized data)
 # exclusion criteria: genes expressed in less than three cells and cells with less than 500 genes
-sample <- CreateSeuratObject(counts = sample.counts, min.cells = 3, min.features  = 500, project = "sample", assay = "RNA")
+sample <- CreateSeuratObject(counts = sample.counts, min.cells = 3, min.features  = 500, project = sample.name, assay = "RNA")
+
+# ***object information**
+# 16994 features across 2733 samples within 1 assay 
+# Active assay: RNA (16994 features, 0 variable features)
 
 # selection of mitochondiral genes
 sample.mito.genes <- grep(pattern = "mt-|^AC0", x = rownames(sample@assays[["RNA"]]), value = TRUE)
@@ -69,3 +74,7 @@ length(sample$nFeature_RNA)
 # save clean data 
 setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data")
 saveRDS(sample, file = "S1a_hpf20_clean.rds")
+
+# ***object information**
+# 16384 features across 2038 samples within 1 assay 
+# Active assay: RNA (16384 features, 0 variable features)
