@@ -66,6 +66,10 @@ length(sample$nFeature_RNA)
 sample <- subset(x = sample, subset = nFeature_RNA > 500)
 length(sample$nFeature_RNA)
 
+#***object information**
+# 18349 features across 4973 samples within 1 assay 
+# Active assay: RNA (18349 features, 0 variable features)
+
 # save clean data 
 setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data")
 saveRDS(sample, file = "S4_hpf18_clean.rds")
