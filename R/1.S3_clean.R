@@ -23,6 +23,10 @@ colnames(sample.counts) <- sample.cell.ids
 # exclusion criteria: genes expressed in less than three cells and cells with less than 500 genes
 sample <- CreateSeuratObject(counts = sample.counts, min.cells = 3, min.features  = 500, project = "sample", assay = "RNA")
 
+#***object info***
+# 19045 features across 5182 samples within 1 assay 
+# Active assay: RNA (19045 features, 0 variable features)
+
 # selection of mitochondiral genes
 sample.mito.genes <- grep(pattern = "mt-|^AC0", x = rownames(sample@assays[["RNA"]]), value = TRUE)
 
@@ -65,6 +69,10 @@ sample <- subset(sample, features = rownames(sample.counts))
 length(sample$nFeature_RNA)
 sample <- subset(x = sample, subset = nFeature_RNA > 500)
 length(sample$nFeature_RNA)
+
+#***object info***
+# 18331 features across 4239 samples within 1 assay 
+# Active assay: RNA (18331 features, 0 variable features)
 
 # save clean data 
 setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data")
