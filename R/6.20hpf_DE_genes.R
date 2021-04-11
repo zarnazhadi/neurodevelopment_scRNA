@@ -24,12 +24,16 @@ sample.markers <- FindAllMarkers(object = sample, only.pos = TRUE, min.pct = 0.2
 markers <- sample.markers %>% group_by(cluster) %>% top_n(2, avg_log2FC)
 write.csv(markers, file = paste0(sample.name, "_top2_markers.csv"))
 
-for(c in seq(from= 0, to= 21)){
+for(c in seq(from= 0, to= 48)){
   top2 <- markers[markers$cluster == c,]$gene
   print(top2)
   
   pdf(paste0("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/", sample.name, "/post-clustering/cluster", c,"_top2_markers_VLN_plot.pdf"))
-  p <- VlnPlot(object = sample, features = top2)
+  p <- VlnPlot(object = sample, features = top2[1]) 
+  p <- p + theme(axis.text=element_text(size=9),axis.title=element_text(size=14))
+  print(p)
+  p <- VlnPlot(object = sample, features = top2[2]) 
+  p <- p + theme(axis.text=element_text(size=9),axis.title=element_text(size=14))
   print(p)
   dev.off()
   
