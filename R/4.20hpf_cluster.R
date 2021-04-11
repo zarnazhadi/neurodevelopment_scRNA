@@ -44,10 +44,10 @@ dev.off()
 
 #------------------------------------———CLUSTER CELLS—————————————————————---------------------------- 
 # find k-nearest neighbours
-sample <- FindNeighbors(sample, reduction = "pca", dims = 1:20)
+sample <- FindNeighbors(sample, reduction = "pca", dims = 1:70)
 
 # cluster cells
-sample <- FindClusters(sample, resolution = 0.5, algorithm = 1)
+sample <- FindClusters(sample, resolution = 1.2, algorithm = 1)
 
 # save as .rds file
 saveRDS(sample, file = "hpf20.cluster.rds")
