@@ -8,7 +8,7 @@ setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data
 sample <- readRDS("hpf18_combined_normalised.rds")
 
 #------------------------------------———FIND VARIABLE GENES—————————————————————---------------------------- 
-sample <- FindVariableFeatures(object = sample, mean.function = ExpMean, dispersion.function = LogVMR)
+sample <- FindVariableFeatures(object = sample, mean.function = ExpMean, dispersion.function = LogVMR) #is this correct or do we have to specify y, x cutoff points and features?
 head(x = HVFInfo(object = sample))
 
 #------------------------------------———SCALE DATA—————————————————————---------------------------- 
@@ -35,7 +35,7 @@ sample <- JackStraw(object = sample, reduction = "pca", dims = 120, num.replicat
 sample <- ScoreJackStraw(object = sample, dims = 1:120, reduction = "pca")
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf/post-normalisation/18hpf_jack_straw_plot.pdf")
-JackStrawPlot(object = sample, dims = 1:120, reduction = "pca", xmax = 0.0025)
+JackStrawPlot(object = sample, dims = 1:120, reduction = "pca", xmax = 0.0025) + theme_classic(base_size = 10) + guides(color = guide_legend(override.aes = list(size=1), ncol=2))
 dev.off()
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf/post-normalisation/18hpf_elbow_plot.pdf")
@@ -44,10 +44,10 @@ dev.off()
 
 #------------------------------------———CLUSTER CELLS—————————————————————---------------------------- 
 # find k-nearest neighbours
-sample <- FindNeighbors(sample, reduction = "pca", dims = 1:120)
+sample <- FindNeighbors(sample, reduction = "pca", dims = 1:70)
 
 # cluster cells
-sample <- FindClusters(sample, resolution = 0.5, algorithm = 1)
+sample <- FindClusters(sample, resolution = 1.2, algorithm = 1)
 
 # save as .rds file
 saveRDS(sample, file = "hpf18.cluster.rds")
