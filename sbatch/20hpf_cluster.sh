@@ -16,4 +16,4 @@ cd /rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/R # cd t
 
 # run Rscripts
 #Rscript 4.18hpf_cluster.R
-Rscript 4.20hpf_cluster.R
+Rscript 5.20hpf_cluster.R
