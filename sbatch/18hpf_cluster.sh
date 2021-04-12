@@ -15,5 +15,5 @@ export R_LIBS_USER=${HOME}/R/library/${EBVERSIONR}/${BB_CPU}
 cd /rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/R # cd to R script
 
 # run Rscripts
-Rscript 4.18hpf_cluster.R
+Rscript 5.18hpf_cluster.R
 #Rscript 4.20hpf_cluster.R
