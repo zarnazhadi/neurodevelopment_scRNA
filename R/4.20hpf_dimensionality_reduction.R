@@ -10,7 +10,7 @@ sample <- readRDS("hpf20_combined_normalised.rds")
 sample.name <- "20hpf"
 
 #------------------------------------———FIND VARIABLE GENES—————————————————————---------------------------- 
-sample <- FindVariableFeatures(object = sample, mean.function = ExpMean, dispersion.function = LogVMR, x.low.cutoff = 0.0125, x.high.cutoff = 3, y.cutoff = 0.5, nfeatures = 2000)
+sample <- FindVariableFeatures(object = sample, mean.function = ExpMean, dispersion.function = LogVMR, mean.cutoff = c(0.01, 3), dispersion.cutoff= c(0.77, Inf))
 head(x = HVFInfo(object = sample))
 
 #------------------------------------———SCALE DATA—————————————————————---------------------------- 
@@ -43,5 +43,5 @@ JackStrawPlot(object = sample, dims = 1:120, reduction = "pca", xmax = 0.0025)
 dev.off()
 
 pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/20hpf/post-normalisation/20hpf_elbow_plot.pdf")
-ElbowPlot(object = sample)
+ElbowPlot(object = sample, ndims= 120)
 dev.off()
