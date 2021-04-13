@@ -23,6 +23,10 @@ colnames(sample.counts) <- sample.cell.ids
 # exclusion criteria: genes expressed in less than three cells and cells with less than 500 genes
 sample <- CreateSeuratObject(counts = sample.counts, min.cells = 3, min.features  = 500, project = "sample", assay = "RNA")
 
+#***object information**
+# 19083 features across 5721 samples within 1 assay 
+# Active assay: RNA (19083 features, 0 variable features)
+
 # selection of mitochondiral genes
 sample.mito.genes <- grep(pattern = "mt-|^AC0", x = rownames(sample@assays[["RNA"]]), value = TRUE)
 
