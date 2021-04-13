@@ -10,7 +10,7 @@ sample <- readRDS("hpf18_combined_normalised.rds")
 sample.name <- "18hpf"
 
 #------------------------------------———FIND VARIABLE GENES—————————————————————---------------------------- 
-sample <- FindVariableFeatures(object = sample, mean.function = ExpMean, dispersion.function = LogVMR) #is this correct or do we have to specify y, x cutoff points and features?
+sample <- FindVariableFeatures(object = sample, mean.function = ExpMean, dispersion.function = LogVMR, mean.cutoff = c(0.01, 3), dispersion.cutoff= c(0.77, Inf)) 
 head(x = HVFInfo(object = sample))
 
 #------------------------------------———SCALE DATA—————————————————————---------------------------- 
