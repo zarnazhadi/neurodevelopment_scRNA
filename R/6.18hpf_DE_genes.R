@@ -16,6 +16,10 @@ sample.markers <- FindAllMarkers(object = sample, only.pos = TRUE, min.pct = 0.1
 markers <- sample.markers %>% group_by(cluster) %>% top_n(2, avg_log2FC)
 write.csv(markers, file = paste0(sample.name, "_top2_markers.csv"))
 
+# top ten genes for each cluster
+markers_10 <- sample.markers %>% group_by(cluster) %>% top_n(10, avg_log2FC)
+write.csv(markers_10, file = paste0(sample.name, "_top10_markers.csv"))
+
 for(c in seq(from= 0, to= 25)){
   top2 <- markers[markers$cluster == c,]$gene
   print(top2)
