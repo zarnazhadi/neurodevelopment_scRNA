@@ -10,15 +10,23 @@ sample.name <- "18hpf"
 
 # find markers for every cluster compared to all remaining cells, report
 # only the positive ones
-sample.markers <- FindAllMarkers(object = sample, only.pos = TRUE, min.pct = 0.18,  min.diff.pct = 0.15)
+sample.markers <- FindAllMarkers(object = sample, only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25)
 
 # top two genes for each cluster
 markers <- sample.markers %>% group_by(cluster) %>% top_n(2, avg_log2FC)
 write.csv(markers, file = paste0(sample.name, "_top2_markers.csv"))
 
+# find min p_val_adj
+non_zero <- markers[apply(markers!=0, 1, all),]
+min(non_zero) # 2.782823e-294
+
 # top ten genes for each cluster
 markers_10 <- sample.markers %>% group_by(cluster) %>% top_n(10, avg_log2FC)
 write.csv(markers_10, file = paste0(sample.name, "_top10_markers.csv"))
+
+# find min p_val_adj
+non_zero <- markers[apply(markers!=0, 1, all),]
+min(non_zero) # 2.502866e-303
 
 for(c in seq(from= 0, to= 25)){
   top2 <- markers[markers$cluster == c,]$gene
