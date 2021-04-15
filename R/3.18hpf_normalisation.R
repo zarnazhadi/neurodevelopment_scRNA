@@ -3,6 +3,7 @@ library("Seurat")
 library(tidyverse)
 library(dplyr)
 library(cowplot)
+library(patchwork)
 
 setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data")
 
@@ -21,6 +22,11 @@ table(combined$orig.ident)
 #------------------------------------———NORMALISATION—————————————————————---------------------------- 
 combined.normalised <- NormalizeData(object = combined, normalization.method = "LogNormalize", scale.factor = 10000)
 GetAssayData(combined.normalised[1:10, 1:15])
+
+pdf("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/18hpf/post-normalisation/post_normalisation_VLN_plot.pdf")
+plot1 <- VlnPlot(combined.normalised, features = "nFeature_RNA", pt.size = 0.1) + NoLegend()
+print(plot1)
+dev.off()
 
 # output file as .rds
 saveRDS(combined.normalised, file = "hpf18_combined_normalised.rds")
