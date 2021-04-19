@@ -1,0 +1,27 @@
+library("Matrix")
+library("Seurat")
+library(tidyverse)
+library(dplyr)
+library(cowplot)
+
+setwd("/Volumes/rdsprojects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data/")
+hpf18 <- readRDS("hpf18_tSNE.cluster.rds")
+hpf20 <- readRDS("hpf20_tSNE.cluster.rds")
+
+pdf(paste0("/Volumes/rdsprojects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/other/diencephalon_18hpf_ridge_plot.pdf"))
+p1 <- VlnPlot(object = hpf18, features = c("baz1b", "dnajc9", "rfc2"), idents = 7)
+p2 <- VlnPlot(object = hpf20, features = c("baz1b", "dnajc9", "rfc2"), idents = 13)
+wrap_plots(p1, p2)
+dev.off()
+
+pdf(paste0("/Volumes/rdsprojects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/other/diencephalon_20hpf_ridge_plot.pdf"))
+p1 <- VlnPlot(object = hpf18, features = c("smarca5", "rpa2", "ppm1g"), idents = 7)
+p2 <- VlnPlot(object = hpf20, features = c("smarca5", "rpa2", "ppm1g"), idents = 13)
+wrap_plots(p1, p2)
+dev.off()
+
+pdf(paste0("/Volumes/rdsprojects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/plots/other/diencephalon_18hpf_ridge_plot.pdf"))
+p1 <- VlnPlot(object = hpf18, features = c("baz1b", "dnajc9", "rfc2"), idents = c(3,19))
+p2 <- VlnPlot(object = hpf20, features = c("baz1b", "dnajc9", "rfc2"), idents = c(5,14))
+wrap_plots(p1, p2)
+dev.off()
