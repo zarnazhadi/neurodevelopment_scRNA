@@ -38,14 +38,14 @@ for(row in seq(from= 1, to = dim(top10)[1])){
 }
 
 current.cluster.ids <- seq(from=0, to=25)
-new.cluster.ids <- c("Hindbrain (Floor plate/Boundary- R3)", "Hindbrain (Ant. Dorsal, Rhombic Lip)", "2", 
-                     "Telencephalon*", "Optic Vesicle (Dorsal)", "Hindbrain- R7/Pharangeal Arch (posterior)*",
+new.cluster.ids <- c("Hindbrain (Floor plate/Boundary- R3),\nVentral Diencephalon, Dienc-Midbrain Boundary,\nDiencephalon", "Hindbrain (Ant. Dorsal, Rhombic Lip)", "2", 
+                     "Telencephalon (I, II)", "Optic Vesicle (Dorsal)", "Hindbrain- R7, Pharangeal Arch (Posterior),\nVentral Midbrain",
                      "Floor Plate", "Ventral Diencephalon", "Epidermis", 
-                     "Placode (epibranchial)*", "Midbrain", "Neural Crest", 
-                     "Hindbrain- R6", "Diencephalon", "Placode (Epibranchial)",
-                     "Commited Progenitors", "Neural Crest*", "Heart Primordium", 
-                     "Placode (Olfactory)", "Telencephalon (Pallium, Neuron)", "Lens (Differentiating)", 
-                     "Rostral Blood Island (Myeloid)", "Placode (Octic)", "Periderm", 
+                     "Placode (Epibranchial/Lens),\nEpidermis", "Midbrain, Midbrain Neural Rod", "Neural Crest", 
+                     "Hindbrain- R5/6", "Diencephalon", "Placode (Epibranchial)",
+                     "Commited Progenitors,\nGanglion/Glutamatergic Neurons", "Neural Crest*", "Heart Primordium", 
+                     "Placode", "Telencephalon (Pallium, Neuron)", "Lens (Differentiating)", 
+                     "Rostral Blood Island (Myeloid)", "Placode (Otic)", "Periderm", 
                      "Prechordal Plate/Polster", "Blood Precursors")
 sample@active.ident <- plyr::mapvalues(x = sample@active.ident, from = current.cluster.ids, to = new.cluster.ids)
 
