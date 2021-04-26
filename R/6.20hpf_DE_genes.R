@@ -11,6 +11,8 @@ sample.name <- "20hpf"
 # find markers for every cluster compared to all remaining cells, report
 # only the positive ones
 sample.markers <- FindAllMarkers(object = sample, only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25)
+markers <- sample.markers %>% group_by(cluster) %>% top_n(21915, avg_log2FC)
+write.csv(markers, file = paste0(sample.name, "_all_markers.csv"))
 
 # top two genes for each cluster
 markers <- sample.markers %>% group_by(cluster) %>% top_n(2, avg_log2FC)
