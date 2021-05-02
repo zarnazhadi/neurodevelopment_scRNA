@@ -19,16 +19,16 @@ markers <- sample.markers %>% group_by(cluster) %>% top_n(2, avg_log2FC)
 write.csv(markers, file = paste0(sample.name, "_top2_markers.csv"))
 
 # find min p_val_adj
-non_zero <- markers[apply(markers!=0, 1, all),]
-min(non_zero) # 6.939244e-293
+#non_zero <- markers[apply(markers!=0, 1, all),]
+#min(non_zero) # 6.939244e-293
 
 # top ten genes for each cluster
 markers_10 <- sample.markers %>% group_by(cluster) %>% top_n(10, avg_log2FC)
 write.csv(markers_10, file = paste0(sample.name, "_top10_markers.csv"))
 
 # find min p_val_adj
-non_zero <- markers[apply(markers!=0, 1, all),]
-min(non_zero) # 6.939244e-293
+#non_zero <- markers[apply(markers!=0, 1, all),]
+#min(non_zero) # 6.939244e-293
 
 for(c in seq(from= 0, to= 40)){
   top2 <- markers[markers$cluster == c,]$gene
