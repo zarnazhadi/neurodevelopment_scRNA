@@ -8,8 +8,7 @@ setwd("/rds/projects/v/vianaj-development-rna/Zarnaz/neurodevelopment_scRNA/data
 sample <- readRDS("hpf18_tSNE.cluster.rds")
 sample.name <- "18hpf"
 
-# find markers for every cluster compared to all remaining cells, report
-# only the positive ones
+# find markers for every cluster compared to all remaining cells and report only the positive ones
 sample.markers <- FindAllMarkers(object = sample, only.pos = TRUE, min.pct = 0.25, thresh.use = 0.25)
 markers <- sample.markers %>% group_by(cluster) %>% top_n(10431, avg_log2FC)
 write.csv(markers, file = paste0(sample.name, "_all_markers.csv"))
@@ -18,17 +17,17 @@ write.csv(markers, file = paste0(sample.name, "_all_markers.csv"))
 markers <- sample.markers %>% group_by(cluster) %>% top_n(2, avg_log2FC)
 write.csv(markers, file = paste0(sample.name, "_top2_markers.csv"))
 
-# find min p_val_adj
-non_zero <- markers[apply(markers!=0, 1, all),]
-min(non_zero) # 2.782823e-294
+# find minimum p_val_adj
+#non_zero <- markers[apply(markers!=0, 1, all),]
+#min(non_zero) # 2.782823e-294
 
 # top ten genes for each cluster
 markers_10 <- sample.markers %>% group_by(cluster) %>% top_n(10, avg_log2FC)
 write.csv(markers_10, file = paste0(sample.name, "_top10_markers.csv"))
 
-# find min p_val_adj
-non_zero <- markers[apply(markers!=0, 1, all),]
-min(non_zero) # 2.502866e-303
+# find minimum p_val_adj
+#non_zero <- markers[apply(markers!=0, 1, all),]
+#min(non_zero) # 2.502866e-303
 
 for(c in seq(from= 0, to= 25)){
   top2 <- markers[markers$cluster == c,]$gene
@@ -48,3 +47,4 @@ for(c in seq(from= 0, to= 25)){
   print (p)
   dev.off()
 }
+
